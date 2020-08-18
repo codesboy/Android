@@ -1,0 +1,58 @@
+参考https://developer.android.com/studio/command-line/adb
+1.mac安装adb
+A.使用预编译版本https://developer.android.com/studio/releases/platform-tools  https://dl.google.com/android/repository/platform-tools-latest-darwin.zip
+解压把adb加入环境变量即可使用adb命令。
+B.通过brew安装 brew cask install android-platform-tools
+
+2.adb通过数据线连接安卓手机
+a.手机打开USB调试模式
+b.数据线连接手机与Mac
+c.通过adb devices命令查看是否连接成功
+
+3.adb通过WLAN连接安卓手机
+a.确保手机和mac处于同一WLAN下，排除防火墙问题
+b.adb tcpip 5555 设置目标设备以监听端口 5555 上的 TCP/IP 连接
+c.adb connect 192.xxx.xxx 连接手机的IP地址
+d.通过adb devices命令查看是否连接成功
+
+adb命令
+adb kill-server 重置adb主机
+adb devices -l 查看已经连接到adb服务器设备列表
+adb install path_to_apk 安装apk
+adb uninstall [-k] [package] k表示保留配置文件
+adb tcp:port tcp:port 端口转发。adb forward tcp:23946 tcp:23946，连接IDA试。
+adb reboot bootloader 进入fastboot
+adb push text.txt /sdcard/txt.txt 上传,将 local 和 remote 替换为开发机器（本地）和设备（远程）上的目标文件/目录的路径。例如： adb push foo.txt /sdcard/foo.txt
+adb pull /data/app/com.huawei.browser-t8k5l0a2bSylcmIf7VMSHg==/base.apk ~/Downloads 下载
+
+
+
+adb shell命令
+adb -s device_name shell 进入shell模式,只有一个设备的时候直接adb shell,进入shell后可以使用Linux命令（top,free，ls等）
+adb shell pm list packages，列举所有的安装包。 adb shell pm list packages -f列出所有包并显示其路径
+adb shell pm list packages -3 查看三方应用
+adb shell pm path com.github.shadowsocks 查看某安装包的位置 adb shell pm path com.huawei.camera查看华为相机路径
+mount -o rw,remount /system 将system文件夹变为可读写的文件系统
+adb shell getprop | grep product 查看设备信息(CPU信息等)
+adb shell dumpsys activity | grep com.xxx.xxx.xx 打印Activity栈顶信息
+adb shell getprop ro.product.name 查看当前产品的名称
+adb shell getprop ro.build.version.release 查看当前系统版本
+adb shell getprop ro.product.cpu.abi 查看当前产品cpu架构
+adb shell cat /proc/cpuinfo CPU信息
+adb shell cat /proc/meminfo 查看手机RAM
+adb shell dumpsys display | grep DisplayDeviceInfo 查看分辨率
+adb shell dumpsys battery 查看电池状况 (scale代表最大电量，level代表当前电量)
+adb shell wm density 查看屏幕密度：(单位dpi)
+adb shell dumpsys window displays 显示屏参数
+adb shell screencap -p /sdcard/xx.png 屏幕截图(保存到手机里)
+adb shell screenrecord /sdcard/demo.mp4 录屏（华为不支持）
+adb shell pm list permissions -g -d  查看权限列表
+adb shell input text hello 在输入框打字
+
+adb shell "dumpsys window | grep mCurrentFocus" 搜索前台activity的指令（先打开某个应用界面）
+adb shell am start "com.tencent.mm/com.tencent.mm.ui.LauncherUI" 启动微信
+adb shell am start "com.tencent.qqlite/com.tencent.mobileqq.activity.SplashActivity" 打开QQ
+adb shell am start com.huawei.camera/com.huawei.camera  启动相机
+adb shell input keyevent "KEYCODE_CAMERA" 点击拍照事件
+adb shell input keyevent "KEYCODE_BACK" 返回
+adb shell am start -a "android.intent.action.VIEW" -t "audio/mp3" -d "file:///storage/sdcard0/200.mp3 播放音乐或视频
