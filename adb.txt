@@ -11,7 +11,7 @@ c.通过adb devices命令查看是否连接成功
 
 3.adb通过WLAN连接安卓手机
 a.确保手机和mac处于同一WLAN下，排除防火墙问题
-b.adb tcpip 5555 设置目标设备以监听端口 5555 上的 TCP/IP 连接
+b.adb tcpip 5555 设置目标设备以监听端口 5555 上的 TCP/IP 连接,设置好后下次就不用再次设置直接connect
 c.adb connect 192.xxx.xxx 连接手机的IP地址
 d.通过adb devices命令查看是否连接成功
 
@@ -56,3 +56,11 @@ adb shell am start com.huawei.camera/com.huawei.camera  启动相机
 adb shell input keyevent "KEYCODE_CAMERA" 点击拍照事件
 adb shell input keyevent "KEYCODE_BACK" 返回
 adb shell am start -a "android.intent.action.VIEW" -t "audio/mp3" -d "file:///storage/sdcard0/200.mp3 播放音乐或视频
+
+adb shell dumpsys battery 查看当前电池所有状态
+adb shell dumpsys battery set ac/usb/wireless 1  设置为AC/USB/Wireless充电模式
+adb shell dumpsys battery set status 2 设置电池为充电状态
+adb shell dumpsys battery set status 1 设置电池为非充电状态
+adb shell dumpsys battery set level 100 设置电量百分比
+adb shell dumpsys battery unplug 设置断开充电（Android 6.0以上）
+adb shell dumpsys battery reset 复位，恢复实际状
